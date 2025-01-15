@@ -1,6 +1,6 @@
 # <img src="images/logo.png" width="100"> javaCourseExamples
 
-### Repositorio de la asignatura Programación Orientada a Objetos de 2º de GITT - Grupo B en la Escuela Técnica Superior de Ingeniería de ICAI (Universidad Pontificia Comillas)
+### Repositorio de la asignatura Programación Orientada a Objetos de 2º de GITT - Grupo A en la Escuela Técnica Superior de Ingeniería de ICAI (Universidad Pontificia Comillas)
 En este repositorio encontrarás:
 - Todos los códigos de ejemplo y demostraciones prácticas realizadas durante la impartición de la asignatura.
 - Documentación de la asignatura como:
