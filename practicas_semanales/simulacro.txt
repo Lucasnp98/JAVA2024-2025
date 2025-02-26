@@ -10,6 +10,7 @@
 // - Prestar una publicación y si está disponible, restar uno al número de ejemplares simulando que se ha prestado
 // - Mostrar todas las publicaciones
 // - Mostrar todas las revistas por temática
+// - Mostrar todas las publicaciones por precio en orden descendente
 // - Calcular el valor del inventario 
 // NOTA: DOS PUBLICACIONES SERÁN IGUALES SI SUS TITULOS SON IGUALES
 // NOTA: DOS LIBROS SON IGUALES SI SUS TITULOS Y SUS ISBNS SON IGUALES
