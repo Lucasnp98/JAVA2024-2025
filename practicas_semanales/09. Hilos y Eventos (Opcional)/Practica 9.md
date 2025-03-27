@@ -1,0 +1,4 @@
+- 1. Modificar las prácticas anteriores para pintar las figuras sobre un panel que herede de Jpanel,
+modificando el paintComponent.
+- 2. Implementar una funcionalidad para que cuando clickees en el panel, se pinte un Círculo cuyo  diametro deban ser introducido a través de un JTextfield. Su coordenada X y su coordenad Y deben coincidir con el punto donde se clickee. 
+- 3. En otro JVentana distinto, que tenga su panel con su paintcomponnt etc, añadir 1 figura (da igual cual, que esté pintada). Añadiendo un botón animación, quiero que las figuras representen una animacion (la que te de la gana). Por ejemplo: Parpadean, cambian de color, se mueven hacia abajo hasta desaparecer, comienzan un movimiento y rebotan  contra las paredes... lo que te apeteza. TIENES QUE USAR UN HILO. 
