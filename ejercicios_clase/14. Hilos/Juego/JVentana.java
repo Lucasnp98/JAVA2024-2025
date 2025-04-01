@@ -13,6 +13,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.HashMap;
 import java.awt.event.ActionEvent;
 
 import java.awt.FlowLayout;
@@ -27,70 +28,55 @@ import java.awt.Font;
 
 public class JVentana extends JFrame
 {
-   
 
     public static void main(String[] args)
     {
         new JVentana();
     }
     PanelJuego panel;
+    final int ANCHO = 800;
+    final int LARGO = 800;
 
-	public JVentana()
+	public int getANCHO() {
+        return ANCHO;
+    }
+
+    public int getLargo() {
+        return LARGO;
+    }
+
+    public JVentana()
 	{
         super("Intro Juego");
-        panel = new PanelJuego();
+        panel = new PanelJuego(this);
         panel.setBackground(Color.BLACK);
-        this.addKeyListener(new KeyAdapter() {
+        panel.setFocusable(true);
+        panel.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
 
-                System.out.println(e.getKeyCode());
-                if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-                    panel.setIzquierdaPresionada(true);
-                } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                    panel.setDerechaPresionada(true);
-                }
+               
+                    panel.setTeclaPresionada(e.getKeyCode(), true);
+              
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-                    panel.setIzquierdaPresionada(false);
-                } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                    panel.setDerechaPresionada(false);
-                }
+                    panel.setTeclaPresionada(e.getKeyCode(), false);
+               
     }
         });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        Thread hilo = new Thread(panel);
-        hilo.start();
         this.add(panel, BorderLayout.CENTER);
-        
-        this.setSize(400,400);
+        this.setSize(ANCHO,LARGO);
         this.setResizable(false);
         this.setLocationRelativeTo(null);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Para que al pulsar en la X finalice la aplicación
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
         this.setVisible(true);
+        panel.requestFocusInWindow();
+        Thread hilo = new Thread(panel);
+        hilo.start();
 
-        this.requestFocus();
-
-
-       
-
-        
+         
 	}
 }
 

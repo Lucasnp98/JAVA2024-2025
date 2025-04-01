@@ -1,34 +1,30 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
-public class Raqueta
+public class Raqueta extends Elemento
 {
-    int x; 
-    int y;
-    public int getX() {
-        return x;
-    }
-    public void setX(int x) {
-        this.x = x;
-    }
-    public int getY() {
-        return y;
-    }
-    public void setY(int y) {
-        this.y = y;
-    }
+   
+    
     int ancho;
     int largo;
     int vx;
+    final int ANCHO_RAQUETA = 100;
+    final int LARGO_RAQUETA = 20;
+    final int VELOCIDAD_X = 10;
     
-    public Raqueta(int x, int y)
-    {
-        this.x = x;
-        this.y = y;
-        this.ancho = 50;
-        this.largo = 10;
-        this.vx = 10;
-    }
+    public Raqueta(int x, int y, Color color)
+{
+    super(x, y, color);
+    this.vx = VELOCIDAD_X;
+    this.ancho = ANCHO_RAQUETA;
+    this.largo = LARGO_RAQUETA;
+}
+
+
+
+
+
 public int getAncho() {
         return ancho;
     }
@@ -59,31 +55,17 @@ public int getAncho() {
     }
 
 
-    public int getVy() {
-        return vy;
-    }
-
-
-    public void setVy(int vy) {
-        this.vy = vy;
-    }
-
 
     
 
     public void pintar(Graphics g)
-    {
+{
+    super.pintar(g);
+    g.fillRect(this.x, this.y, this.ancho, this.largo);
+}
 
-        g.setColor(Color.WHITE);
-        g.fillRect(this.x, this.y, this.ancho, this.largo);
-        
-    }
 
-    public void mover()
-    {
-
-    }
-
+  
     public void moverDerecha()
     {
         this.x += vx;
@@ -93,5 +75,11 @@ public int getAncho() {
     {
         this.x -= vx;
     }
+
+    @Override
+    public Rectangle getRect() {
+        return new Rectangle(this.x, this.y, this.ancho, this.largo);
+    }
+    
 
 }

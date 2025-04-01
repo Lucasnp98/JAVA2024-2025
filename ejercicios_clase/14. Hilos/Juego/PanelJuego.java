@@ -1,4 +1,8 @@
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.JPanel;
 
@@ -7,10 +11,36 @@ public class PanelJuego extends JPanel implements Runnable{
 
     private Pelota pelota;
     private Raqueta raqueta;
-    private boolean izquierdaPresionada = false;
-    private boolean derechaPresionada = false;
+    private ArrayList<Ladrillo> ladrillos;
+    private boolean juegoIniciado;
+    private JVentana ventana_juego;
+
+    private int ANCHO;
+    private int LARGO;
+    final int FILAS = 3;
+    final int COLUMNAS = 5;
+    final int FPS = 40;
+    final int FRAME_TIME = 1000 / FPS;
+    private HashMap<Integer, Boolean> teclasPresionadas = new HashMap<>();
+
+    PanelJuego(JVentana ventana_juego)
+    {
+        super();
+        this.ANCHO = ventana_juego.getANCHO();
+        this.LARGO = ventana_juego.getLargo();
+        this.juegoIniciado = false;
+        int mitad_ancho = this.ANCHO / 2;
+        int mitad_largo = this.LARGO / 2;
+        this.pelota = new Pelota(mitad_largo,mitad_largo,Color.RED, 30);
+        this.raqueta = new Raqueta(mitad_ancho, mitad_largo + mitad_largo - 100, Color.WHITE );
+        this.ladrillos = new ArrayList<Ladrillo>();
+        
+    }
     
-    
+
+    public HashMap<Integer, Boolean> getTeclasPresionadas() {
+        return teclasPresionadas;
+    }
 
 
     public Pelota getPelota() {
@@ -33,22 +63,12 @@ public class PanelJuego extends JPanel implements Runnable{
     }
 
 
-    PanelJuego()
-    {
-        super();
-        this.pelota = new Pelota(100,100,30);
-        this.raqueta = new Raqueta(300, 300 );
+    public void setTeclaPresionada(int keyCode, boolean estado) {
+        teclasPresionadas.put(keyCode, estado);
     }
 
-
-
-    public boolean isIzquierdaPresionada() {
-        return izquierdaPresionada;
-    }
-
-
-    public void setIzquierdaPresionada(boolean izquierdaPresionada) {
-        this.izquierdaPresionada = izquierdaPresionada;
+    public boolean isTeclaPresionada(int keyCode) {
+        return teclasPresionadas.getOrDefault(keyCode, false);
     }
 
     @Override
@@ -57,55 +77,80 @@ public class PanelJuego extends JPanel implements Runnable{
         super.paintComponent(g);
         pelota.pintar(g);
         raqueta.pintar(g);
-    }
-
-
-    public boolean isDerechaPresionada() {
-        return derechaPresionada;
-    }
-
-
-    public void setDerechaPresionada(boolean derechaPresionada) {
-        this.derechaPresionada = derechaPresionada;
+        for (Ladrillo l:ladrillos)
+        {
+            l.pintar(g);
+        }
     }
 
 
     @Override
-    public void run()
-    {
-        while (true)
-        {
-            pelota.mover();
-
-            pelota.checkeaColisiones(getWidth(), getHeight(), raqueta);
-
-
-            if (derechaPresionada)
-            {
-                System.out.println("Derecha presionada");
-                raqueta.moverDerecha();
-
+    public void run() {
+        inicializarLadrillos();
+        boolean bucle_juego = true;
+        while (bucle_juego) {
+            actualizarEstado();
+            repaint();
+            if (pelota.haTocadoSuelo()) {
                
+                bucle_juego = false; 
             }
-            if (izquierdaPresionada)
-            {
-                raqueta.moverIzquierda();
-               
-            }
-            
-
-            
+    
             try {
-                Thread.sleep(40); // ~60 FPS
+                Thread.sleep(FRAME_TIME);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
-            this.repaint();
         }
-
-        
     }
+    
+
+
+
+    private void actualizarEstado() {
+
+        if (juegoIniciado) {
+            pelota.checkeaColisiones(ANCHO, LARGO, raqueta, ladrillos);
+            pelota.mover();
+        }
+    
+        if (isTeclaPresionada(KeyEvent.VK_RIGHT)) {
+            raqueta.moverDerecha();
+        }
+        if (isTeclaPresionada(KeyEvent.VK_LEFT)) {
+            raqueta.moverIzquierda();
+        }
+    
+        if (isTeclaPresionada(KeyEvent.VK_SPACE) && !juegoIniciado) {
+            juegoIniciado = true;
+        }
+    }
+    
+
+    public void inicializarLadrillos() {
+    
+    
+        int margenLateral = 40; 
+        int margenVertical = 20;
+        int separacionEntreLadrillos = 10;
+    
+        int anchoDisponible = ANCHO - 2 * margenLateral - (COLUMNAS - 1) * separacionEntreLadrillos;
+        int anchoLadrillo = anchoDisponible / COLUMNAS;
+        int altoLadrillo = 20;
+    
+        for (int fila = 0; fila < FILAS; fila++) {
+            for (int col = 0; col < COLUMNAS; col++) {
+                int x = margenLateral + col * (anchoLadrillo + separacionEntreLadrillos);
+                int y = margenVertical + fila * (altoLadrillo + separacionEntreLadrillos);
+                ladrillos.add(new Ladrillo(x, y, Color.BLUE, anchoLadrillo, altoLadrillo));
+            }
+        }
+    }
+    
+    
+
+
+    
 
 
 
